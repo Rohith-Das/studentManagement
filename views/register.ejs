@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Your Company</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-modal {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            margin: 1rem;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        .close-button:hover {
+            color: #34495e;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .register-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-header p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 0.5rem;
+        }
+
+        .register-button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .register-button:hover {
+            background-color: #2980b9;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #3498db;
+            text-decoration: none;
+            margin-left: 0.3rem;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-overlay">
+        <div class="register-modal">
+            <button class="close-button" onclick="closeModal()">&times;</button>
+            
+            <div class="register-header">
+                <h2>Create Account</h2>
+                <p>Please fill in your information to register</p>
+            </div>
+            
+            <form action="/register" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        placeholder="Enter your full name" 
+                        required 
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Enter your email" 
+                        required 
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Create a password" 
+                        required 
+                    />
+                    <div class="password-requirements">
+                        Password must be at least 8 characters long and include numbers and special characters
+                    </div>
+                </div>
+
+                <button type="submit" class="register-button">Create Account</button>
+
+                <div class="login-link">
+                    Already have an account?<a href="/login">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const nameInput = document.getElementById("name");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+        
+            function showError(input, message) {
+                let errorElement = input.nextElementSibling;
+                if (!errorElement || !errorElement.classList.contains("error-message")) {
+                    errorElement = document.createElement("div");
+                    errorElement.classList.add("error-message");
+                    input.parentNode.insertBefore(errorElement, input.nextSibling);
+                }
+                errorElement.innerText = message;
+                errorElement.style.color = "red";
+                input.style.borderColor = "red";
+            }
+        
+            function clearError(input) {
+                let errorElement = input.nextElementSibling;
+                if (errorElement && errorElement.classList.contains("error-message")) {
+                    errorElement.remove();
+                }
+                input.style.borderColor = "";
+            }
+        
+            function validateName() {
+                const nameValue = nameInput.value.trim();
+                const nameRegex = /^[A-Za-z]{3,}$/; 
+        
+                if (!nameRegex.test(nameValue)) {
+                    showError(nameInput, "Name must be at least 3 characters and contain only letters.");
+                    return false;
+                } else {
+                    clearError(nameInput);
+                    return true;
+                }
+            }
+        
+            function validateEmail() {
+                const emailValue = emailInput.value.trim();
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+                if (!emailRegex.test(emailValue)) {
+                    showError(emailInput, "Enter a valid email address.");
+                    return false;
+                } else {
+                    clearError(emailInput);
+                    return true;
+                }
+            }
+        
+            function validatePassword() {
+                const passwordValue = passwordInput.value.trim();
+        
+                if (passwordValue.length < 8) {
+                    showError(passwordInput, "Password must be at least 8 characters long.");
+                    return false;
+                } else {
+                    clearError(passwordInput);
+                    return true;
+                }
+            }
+        
+            form.addEventListener("submit", function (event) {
+                const isNameValid = validateName();
+                const isEmailValid = validateEmail();
+                const isPasswordValid = validatePassword();
+        
+                if (!isNameValid || !isEmailValid || !isPasswordValid) {
+                    event.preventDefault();
+                }
+            });
+        
+            nameInput.addEventListener("input", validateName);
+            emailInput.addEventListener("input", validateEmail);
+            passwordInput.addEventListener("input", validatePassword);
+        });
+        </script>
+        
+</body>
+</html>
